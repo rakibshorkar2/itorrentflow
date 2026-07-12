@@ -8,12 +8,14 @@ import UIKit
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     let controller = window?.rootViewController as! FlutterViewController
-    let bridge = TorrentBridge.shared
+    guard let bridge = TorrentBridge.shared else {
+      return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    }
     let channel = FlutterMethodChannel(
       name: "com.torrent.app/bridge",
       binaryMessenger: controller.binaryMessenger
     )
-    channel.setMethodCallHandler { call, result in
+    channel.setMethodCallHandler { [bridge] call, result in
       bridge.handleMethodCall(call, result: result)
     }
     GeneratedPluginRegistrant.register(with: self)
