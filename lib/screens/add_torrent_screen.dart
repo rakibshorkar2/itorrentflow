@@ -3,15 +3,22 @@ import '../torrent_service.dart';
 
 class AddTorrentScreen extends StatefulWidget {
   final TorrentService service;
-  const AddTorrentScreen({super.key, required this.service});
+  final String? initialMagnet;
+  const AddTorrentScreen({super.key, required this.service, this.initialMagnet});
 
   @override
   State<AddTorrentScreen> createState() => _AddTorrentScreenState();
 }
 
 class _AddTorrentScreenState extends State<AddTorrentScreen> {
-  final _magnetCtrl = TextEditingController();
+  late final TextEditingController _magnetCtrl;
   bool _adding = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _magnetCtrl = TextEditingController(text: widget.initialMagnet ?? '');
+  }
 
   @override
   void dispose() {

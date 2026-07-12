@@ -88,4 +88,9 @@ class TorrentBridge {
     final result = await _channel.invokeMethod<String>('version');
     return result ?? '';
   }
+
+  Future<String?> getPendingMagnetURL() async {
+    final result = await _channel.invokeMethod<String>('getPendingMagnetURL');
+    return result;
+  }
 }

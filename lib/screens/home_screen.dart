@@ -28,8 +28,21 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!mounted) return;
     setState(() {
       _initializing = false;
-      if (!ok) _error = 'Failed to initialize torrent engine';
+      if (!ok) {
+        _error = 'Failed to initialize torrent engine';
+      }
     });
+    if (ok) {
+      final pending = await widget.service.getPendingMagnetURL();
+      if (pending != null && mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => AddTorrentScreen(service: widget.service, initialMagnet: pending),
+          ),
+        );
+      }
+    }
   }
 
   @override

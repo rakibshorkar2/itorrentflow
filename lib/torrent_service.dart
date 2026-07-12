@@ -88,6 +88,10 @@ class TorrentService {
     await _bridge.setUploadLimit(bytesPerSec);
   }
 
+  Future<String?> getPendingMagnetURL() async {
+    return await _bridge.getPendingMagnetURL();
+  }
+
   Future<void> dispose() async {
     _pollTimer?.cancel();
     await _statusController.close();
