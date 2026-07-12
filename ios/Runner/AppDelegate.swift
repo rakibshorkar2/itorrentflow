@@ -8,7 +8,7 @@ import UIKit
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     let controller = window?.rootViewController as! FlutterViewController
-    guard let bridge = TorrentBridge.shared else {
+    guard let bridge = TorrentBridge.shared() else {
       return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     let channel = FlutterMethodChannel(
