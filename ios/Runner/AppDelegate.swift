@@ -16,7 +16,7 @@ import UIKit
       binaryMessenger: controller.binaryMessenger
     )
     channel.setMethodCallHandler { [bridge] call, result in
-      bridge.handleMethodCall(call, result: result)
+      bridge.handle(call, result: result)
     }
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
