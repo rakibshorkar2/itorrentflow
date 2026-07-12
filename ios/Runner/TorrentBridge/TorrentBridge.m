@@ -1,5 +1,5 @@
 #import "TorrentBridge.h"
-#import <libtorrent_flutter/torrent_bridge.h>
+#import "torrent_bridge.h"
 
 static lt_session_t g_session = NULL;
 

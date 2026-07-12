@@ -1,2 +1,2 @@
 #import "GeneratedPluginRegistrant.h"
-#import "TorrentBridge.h"
+#import "TorrentBridge/TorrentBridge.h"
