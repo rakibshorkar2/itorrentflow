@@ -135,7 +135,8 @@ static lt_session_t g_session = NULL;
         if (g_session) lt_set_upload_limit(g_session, [limit intValue]);
         result(nil);
     } else if ([@"version" isEqualToString:call.method]) {
-        result(@(lt_version()));
+        const char *ver = lt_version();
+        result(ver ? @(ver) : @"unknown");
     } else {
         result(FlutterMethodNotImplemented);
     }

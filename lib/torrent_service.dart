@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'torrent_bridge.dart';
 import 'models/torrent_status.dart';
 import 'models/file_info.dart';
@@ -8,6 +9,7 @@ class TorrentService {
   final TorrentBridge _bridge = TorrentBridge.instance;
   List<TorrentStatus> _torrents = [];
   Timer? _pollTimer;
+  String? _downloadPath;
 
   List<TorrentStatus> get torrents => List.unmodifiable(_torrents);
 
@@ -21,6 +23,7 @@ class TorrentService {
     int downloadLimit = 0,
     int uploadLimit = 0,
   }) async {
+    _downloadPath = '${(await getApplicationDocumentsDirectory()).path}/downloads';
     final success = await _bridge.createSession(
       listenInterface: listenInterface,
       downloadLimit: downloadLimit,
@@ -49,7 +52,7 @@ class TorrentService {
 
   Future<int> addMagnet(String magnetUri, {bool streamOnly = false}) async {
     if (!_initialized) return -1;
-    final dir = Directory('$torrentDownloadPath/torrents');
+    final dir = Directory('${_downloadPath!}/torrents');
     if (!await dir.exists()) await dir.create(recursive: true);
     return await _bridge.addMagnet(magnetUri, dir.path, streamOnly: streamOnly);
   }
@@ -85,16 +88,9 @@ class TorrentService {
     await _bridge.setUploadLimit(bytesPerSec);
   }
 
-  String get torrentDownloadPath {
-    if (Platform.isIOS) {
-      return '${Directory.systemTemp.path}/torrent_downloads';
-    }
-    return '${Directory.systemTemp.path}/torrent_downloads';
-  }
-
   Future<void> dispose() async {
     _pollTimer?.cancel();
-    _statusController.close();
+    await _statusController.close();
     await _bridge.destroySession();
     _initialized = false;
   }
