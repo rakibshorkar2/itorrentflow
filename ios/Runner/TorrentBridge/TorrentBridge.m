@@ -28,6 +28,11 @@ static lt_session_t g_session = NULL;
             lt_destroy_session(g_session);
         }
         g_session = lt_create_session([listen UTF8String], [dlLimit intValue], [ulLimit intValue]);
+        if (g_session) {
+            lt_bt_config cfg;
+            lt_get_default_config(&cfg);
+            lt_configure_session(g_session, &cfg);
+        }
         result(@(g_session != NULL));
     } else if ([@"destroySession" isEqualToString:call.method]) {
         if (g_session) { lt_destroy_session(g_session); g_session = NULL; }
@@ -36,10 +41,17 @@ static lt_session_t g_session = NULL;
         NSString *uri = call.arguments[@"uri"];
         NSString *path = call.arguments[@"savePath"];
         NSNumber *streamOnly = call.arguments[@"streamOnly"] ?: @0;
-        if (!g_session || !uri) { result(@(-1)); return; }
+        if (!g_session) { result(@{@"id": @(-1), @"error": @"Session not initialized"}); return; }
+        if (!uri) { result(@{@"id": @(-1), @"error": @"No magnet URI provided"}); return; }
+        if (!path) { result(@{@"id": @(-1), @"error": @"No save path provided"}); return; }
         lt_torrent_id tid = lt_add_magnet(g_session, [uri UTF8String],
                                           [path UTF8String], [streamOnly intValue]);
-        result(@(tid));
+        if (tid < 0) {
+            const char *err = lt_last_error();
+            result(@{@"id": @(tid), @"error": err ? @(err) : @"Unknown error"});
+        } else {
+            result(@{@"id": @(tid), @"error": [NSNull null]});
+        }
     } else if ([@"removeTorrent" isEqualToString:call.method]) {
         NSNumber *tid = call.arguments[@"id"];
         NSNumber *del = call.arguments[@"deleteFiles"] ?: @0;

@@ -50,8 +50,8 @@ class TorrentService {
     } catch (_) {}
   }
 
-  Future<int> addMagnet(String magnetUri, {bool streamOnly = false}) async {
-    if (!_initialized) return -1;
+  Future<({int id, String? error})> addMagnet(String magnetUri, {bool streamOnly = false}) async {
+    if (!_initialized) return (id: -1, error: 'Engine not initialized');
     final dir = Directory('${_downloadPath!}/torrents');
     if (!await dir.exists()) await dir.create(recursive: true);
     return await _bridge.addMagnet(magnetUri, dir.path, streamOnly: streamOnly);

@@ -41,14 +41,15 @@ class _AddTorrentScreenState extends State<AddTorrentScreen> {
       return;
     }
     setState(() => _adding = true);
-    final id = await widget.service.addMagnet(magnet);
+    final result = await widget.service.addMagnet(magnet);
     if (!mounted) return;
     setState(() => _adding = false);
-    if (id >= 0) {
+    if (result.id >= 0) {
       Navigator.pop(context, true);
     } else {
+      final msg = result.error ?? 'Failed to add torrent';
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to add torrent')),
+        SnackBar(content: Text(msg)),
       );
     }
   }

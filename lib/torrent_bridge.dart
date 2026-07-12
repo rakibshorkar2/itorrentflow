@@ -26,13 +26,16 @@ class TorrentBridge {
     await _channel.invokeMethod('destroySession');
   }
 
-  Future<int> addMagnet(String uri, String savePath, {bool streamOnly = false}) async {
-    final result = await _channel.invokeMethod<int>('addMagnet', {
+  Future<({int id, String? error})> addMagnet(String uri, String savePath, {bool streamOnly = false}) async {
+    final result = await _channel.invokeMethod<Map<dynamic, dynamic>>('addMagnet', {
       'uri': uri,
       'savePath': savePath,
       'streamOnly': streamOnly ? 1 : 0,
     });
-    return result ?? -1;
+    if (result == null) return (id: -1, error: 'No response from native');
+    final id = result['id'] as int;
+    final error = result['error'] as String?;
+    return (id: id, error: error);
   }
 
   Future<void> removeTorrent(int id, {bool deleteFiles = false}) async {
