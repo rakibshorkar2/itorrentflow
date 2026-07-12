@@ -1,5 +1,5 @@
-name: torrent_app
-description: "Torrent downloading app with magnet link support."
+name: dirxplore_pro
+description: "DirXplore Pro - File management and torrent downloader."
 publish_to: 'none'
 
 # The following defines the version and build number for your application.
