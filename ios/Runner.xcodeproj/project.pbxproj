@@ -399,6 +399,8 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-llibtorrent_flutter",
+					"-framework",
+					"SystemConfiguration",
 				);
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -596,6 +598,8 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-llibtorrent_flutter",
+					"-framework",
+					"SystemConfiguration",
 				);
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -634,6 +638,8 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-llibtorrent_flutter",
+					"-framework",
+					"SystemConfiguration",
 				);
 				VERSIONING_SYSTEM = "apple-generic";
 			};
