@@ -74,23 +74,24 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Torrents'),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.push<bool>(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => AddTorrentScreen(service: widget.service),
-                ),
-              ).then((added) {
-                if (added == true && mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Torrent added')),
-                  );
-                }
-              });
-            },
-          ),
+          if (!_initializing && _error == null)
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.push<bool>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AddTorrentScreen(service: widget.service),
+                  ),
+                ).then((added) {
+                  if (added == true && mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Torrent added')),
+                    );
+                  }
+                });
+              },
+            ),
         ],
       ),
       body: _buildBody(),
